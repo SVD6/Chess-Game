@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package chess;
+import chess.Bishop;
 
 /**
  *
@@ -19,6 +20,10 @@ public class Queen extends Piece{
         int deltaRow = dest.getRowNumber() - src.getRowNumber();
         int deltaCol = dest.getColumnNumber() - src.getColumnNumber();
         boolean Result = false;
+        
+        if (Math.abs(deltaRow) <= 1 && Math.abs(deltaRow) <= 1) {
+            Result = true;
+        }
         return Result;
     }
 }

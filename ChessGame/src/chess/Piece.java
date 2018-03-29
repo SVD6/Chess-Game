@@ -15,6 +15,7 @@ public class Piece {
     private char shortName;
     private ChessColour colour;
     private ChessPieces name;
+    private String imageName;
     
     public Piece(ChessColour colour, ChessPieces name)
     {
@@ -28,6 +29,8 @@ public class Piece {
     public ChessPieces getName() { return this.name; }
     public char getShortName ()  { return this.shortName; }
     
+    public String getImageName() { return this.getColour().toString().toLowerCase() + "_" + this.getName().toString().toLowerCase() + ".png"; }
+    
     public String toString() {       
         return (getColour() + " " + getName());
     }
@@ -37,7 +40,7 @@ public class Piece {
         if (board.getSquare(dest).isOccupied()) {
             if (!(board.getSquare(dest).getPiece().getColour() == board.getSquare(src).getPiece().getColour())) {
                 return true;
-            }
+            } 
             else {
                 return false;
             }
