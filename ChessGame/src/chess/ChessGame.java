@@ -12,7 +12,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.control.Button;
+import javafx.scene.control.Button; 
+import java.util.List;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -39,7 +40,25 @@ public class ChessGame extends Application implements ListChangeListener {
         whiteTakenSquare = new Button[16];
         blackTakenSquare = new Button[16];
         EventHandler<ActionEvent> sharedHandler = new SquareEventHandler(board);
-//        board.addTakenObserver(new ListChangeListener<Piece>());
+        board.addTakenObserver(new ListChangeListener<Piece>() {
+            @Override
+            public void onChanged(Change c) {
+                while (c.next()) {
+                    if (c.wasAdded()) { // In our application, should be nothing else
+                        int index = c.getFrom(); // In our application, will be 1
+                        List<Piece> pieces = c.getAddedSubList();
+                        for (Piece p : pieces) {
+                            if (p.getColour() == ChessColour.BLACK) {
+                                blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                            }
+                            else {
+                                whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         BorderPane root = new BorderPane();
         VBox whitetaken = new VBox();
@@ -64,31 +83,27 @@ public class ChessGame extends Application implements ListChangeListener {
                 Piece piece = board.getSquare(new Coordinate(i, j)).getPiece();
                 pieces[i][j] = new Button("" + (new Coordinate(i, j)).getColumn() + (new Coordinate(i, j)).getRow());
                 pieces[i][j].setMinSize(90, 90);
-                if (piece != null) {
-                    pieces[i][j].setGraphic(new ImageView(new Image("chess/images/" + piece.getImageName())));
-                }
+                if (piece != null) pieces[i][j].setGraphic(new ImageView(new Image("chess/images/" + piece.getImageName())));                
                 pieces[i][j].setOnAction(sharedHandler);
                 mainboard.add(pieces[i][j], i, 8 - j);
-                if (color == 1) {
-                    pieces[i][j].setStyle("-fx-background-color: grey;");
-                }
+                if (color == 1) pieces[i][j].setStyle("-fx-background-color: grey;");                
                 color = color == 1 ? 0 : 1;
             }
             color = color == 1 ? 0 : 1;
         }
 
         for (int i = 0; i < 16; i++) {
-            Button temp = new Button();
-            temp.setStyle("-fx-background-color: grey;");
-            temp.setMinSize(90, 45);
-            whitetaken.getChildren().add(temp);
+            this.whiteTakenSquare[i] = new Button();
+            whiteTakenSquare[i].setStyle("-fx-background-color: grey;");
+            whiteTakenSquare[i].setMinSize(90, 45);
+            whitetaken.getChildren().add(whiteTakenSquare[i]);
         }
 
         for (int i = 0; i < 16; i++) {
-            Button temp = new Button();
-            temp.setStyle("-fx-background-color: grey;");
-            temp.setMinSize(90, 45);
-            blacktaken.getChildren().add(temp);
+            blackTakenSquare[i] = new Button();
+            blackTakenSquare[i].setStyle("-fx-background-color: grey;");
+            blackTakenSquare[i].setMinSize(90, 45);
+            blacktaken.getChildren().add(blackTakenSquare[i]);
         }
 
         primaryStage.setTitle("Chess Game");
@@ -98,7 +113,7 @@ public class ChessGame extends Application implements ListChangeListener {
 
     @Override
     public void onChanged(Change c) {
-        System.out.println("A piece was taken nigga");
+//        Empty method since onChanged has already been implemented when creating a new ListChangeListener
     }
 
 }
@@ -121,14 +136,13 @@ class SquareEventHandler implements EventHandler {
     public void handle(Event event) {
         Object source = event.getSource();
         Button button = (Button) source;
-        Coordinate coordinate = new Coordinate(button.getText());
-        Square square = new Square(coordinate);
-        
+        Square square = new Square(new Coordinate(button.getText()));
+
         if (firstClick == false) {
             secondSquare = square;
             secondButton = button;
             boolean ismove = board.move(firstSquare.getCoordinate(), secondSquare.getCoordinate());
-            System.out.println(ismove);
+            
             if (ismove == true) {
                 secondButton.setGraphic(firstButton.getGraphic());
                 firstButton.setGraphic(null);
@@ -137,9 +151,7 @@ class SquareEventHandler implements EventHandler {
                 this.firstSquare = null;
                 this.secondButton = null;
                 this.secondSquare = null;
-            }
-            
-            else {
+            } else {
                 System.out.println("False move, try again");
                 this.firstButton = null;
                 this.firstSquare = null;
@@ -147,15 +159,10 @@ class SquareEventHandler implements EventHandler {
                 this.secondSquare = null;
                 firstClick = true;
             }
-        }
-        
-        else if (firstClick == true) {
+        } else if (firstClick == true) {
             firstSquare = square;
             firstButton = button;
             firstClick = false;
         }
-        
-        
-        System.out.println(coordinate.toString());
     }
 }
