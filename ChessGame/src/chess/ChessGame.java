@@ -12,7 +12,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.control.Button; 
+import javafx.scene.control.Button;
 import java.util.List;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -40,24 +40,8 @@ public class ChessGame extends Application implements ListChangeListener {
         whiteTakenSquare = new Button[16];
         blackTakenSquare = new Button[16];
         EventHandler<ActionEvent> sharedHandler = new SquareEventHandler(board);
-        board.addTakenObserver(new ListChangeListener<Piece>() {
-            @Override
-            public void onChanged(Change c) {
-                while (c.next()) {
-                    if (c.wasAdded()) { // In our application, should be nothing else
-                        int index = c.getFrom(); // In our application, will be 1
-                        List<Piece> pieces = c.getAddedSubList();
-                        for (Piece p : pieces) {
-                            if (p.getColour() == ChessColour.BLACK) {
-                                blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
-                            }
-                            else {
-                                whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
-                            }
-                        }
-                    }
-                }
-            }
+        board.addTakenObserver((ListChangeListener) c -> {
+            this.onChanged(c);
         });
 
         BorderPane root = new BorderPane();
@@ -83,10 +67,14 @@ public class ChessGame extends Application implements ListChangeListener {
                 Piece piece = board.getSquare(new Coordinate(i, j)).getPiece();
                 pieces[i][j] = new Button("" + (new Coordinate(i, j)).getColumn() + (new Coordinate(i, j)).getRow());
                 pieces[i][j].setMinSize(90, 90);
-                if (piece != null) pieces[i][j].setGraphic(new ImageView(new Image("chess/images/" + piece.getImageName())));                
+                if (piece != null) {
+                    pieces[i][j].setGraphic(new ImageView(new Image("chess/images/" + piece.getImageName())));
+                }
                 pieces[i][j].setOnAction(sharedHandler);
                 mainboard.add(pieces[i][j], i, 8 - j);
-                if (color == 1) pieces[i][j].setStyle("-fx-background-color: grey;");                
+                if (color == 1) {
+                    pieces[i][j].setStyle("-fx-background-color: grey;");
+                }
                 color = color == 1 ? 0 : 1;
             }
             color = color == 1 ? 0 : 1;
@@ -113,9 +101,20 @@ public class ChessGame extends Application implements ListChangeListener {
 
     @Override
     public void onChanged(Change c) {
-//        Empty method since onChanged has already been implemented when creating a new ListChangeListener
+        while (c.next()) {
+            if (c.wasAdded()) {
+                int index = c.getFrom();
+                List<Piece> pieces = c.getAddedSubList();
+                for (Piece p : pieces) {
+                    if (p.getColour() == ChessColour.BLACK) {
+                        blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    } else {
+                        whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    }
+                }
+            }
+        }
     }
-
 }
 
 class SquareEventHandler implements EventHandler {
@@ -141,9 +140,9 @@ class SquareEventHandler implements EventHandler {
         if (firstClick == false) {
             secondSquare = square;
             secondButton = button;
-            boolean ismove = board.move(firstSquare.getCoordinate(), secondSquare.getCoordinate());
-            
-            if (ismove == true) {
+            boolean move = board.move(firstSquare.getCoordinate(), secondSquare.getCoordinate());
+
+            if (move == true) {
                 secondButton.setGraphic(firstButton.getGraphic());
                 firstButton.setGraphic(null);
                 firstClick = true;

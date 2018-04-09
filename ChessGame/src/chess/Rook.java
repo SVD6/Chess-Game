@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package chess;
-
+    
 /**
  *
  * @author Sai Vikranth Desu
@@ -15,10 +15,25 @@ public class Rook extends Piece{
         super (colour, ChessPieces.ROOK);
     }
     
+    @Override
     public boolean isLegalMove(ChessBoard board, Coordinate src, Coordinate dest) {
-        int deltaRow = dest.getRowNumber() - src.getRowNumber();
-        int deltaCol = dest.getColumnNumber() - src.getColumnNumber();
-        boolean Result = false;
-        return Result;
+        if (!super.isLegalMove(board, src, dest)) return false;
+        // TBD: Can also move along the X axis!!
+        // Only along the COLUMN(Y) axis
+        if (src.getColumn() != dest.getColumn() ) return false;
+        // AND only if intermediate squares are unoccupied
+        int x = src.getColumn();
+        int srcY = src.getRow();
+        int destY = dest.getRow();
+        if (srcY > destY) { // Moving from Black to White. Flip it for uniform iteration
+           int temp = srcY;
+            srcY = destY;
+            destY = temp;   
+        }
+        srcY++; destY--;
+        for (int i=srcY; i<=destY;i++) {
+            if (board.getSquare(new Coordinate(x,i)).isOccupied()) return false;      
+        }
+        return true;
     }
 }
