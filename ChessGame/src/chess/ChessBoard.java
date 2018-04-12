@@ -118,10 +118,8 @@ public class ChessBoard {
             Piece takenPiece = destSquare.addPiece(p);
             if (takenPiece != null) {
                 if (takenPiece.getColour() == ChessColour.BLACK) {
-//                    blackTakenPieces.add(takenPiece);
                     blackTakenPiece.add(takenPiece);
                 } else {
-//                    whiteTakenPieces.add(takenPiece);
                     whiteTakenPiece.add(takenPiece);
                 }
             }
@@ -141,6 +139,7 @@ public class ChessBoard {
         this.whiteTakenPiece.addListener(listener);
     }
 
+    @Override
     public String toString() {
 
         String s = "Board\n";
