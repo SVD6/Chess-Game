@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  */
 public class ChessGame extends Application implements ListChangeListener {
 
-    private ChessBoard board;
+    private ChessBoard board = new ChessBoard();
     private Button[] whiteTakenSquare;
     private Button[] blackTakenSquare;
 
@@ -36,13 +36,10 @@ public class ChessGame extends Application implements ListChangeListener {
 
     @Override
     public void start(Stage primaryStage) {
-        board = new ChessBoard();
         whiteTakenSquare = new Button[16];
         blackTakenSquare = new Button[16];
         EventHandler<ActionEvent> sharedHandler = new SquareEventHandler(board);
-        board.addTakenObserver((ListChangeListener) c -> {
-            this.onChanged(c);
-        });
+        board.addTakenObserver(this);
 
         BorderPane root = new BorderPane();
         VBox whitetaken = new VBox();
@@ -106,11 +103,8 @@ public class ChessGame extends Application implements ListChangeListener {
                 int index = c.getFrom();
                 List<Piece> pieces = c.getAddedSubList();
                 for (Piece p : pieces) {
-                    if (p.getColour() == ChessColour.BLACK) {
-                        blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
-                    } else {
-                        whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
-                    }
+                    if (p.getColour() == ChessColour.BLACK) blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    else whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
                 }
             }
         }
@@ -145,19 +139,10 @@ class SquareEventHandler implements EventHandler {
             if (move == true) {
                 secondButton.setGraphic(firstButton.getGraphic());
                 firstButton.setGraphic(null);
-                firstClick = true;
-                this.firstButton = null;
-                this.firstSquare = null;
-                this.secondButton = null;
-                this.secondSquare = null;
             } else {
                 System.out.println("False move, try again");
-                this.firstButton = null;
-                this.firstSquare = null;
-                this.secondButton = null;
-                this.secondSquare = null;
-                firstClick = true;
             }
+            firstClick = true;
         } else if (firstClick == true) {
             firstSquare = square;
             firstButton = button;
