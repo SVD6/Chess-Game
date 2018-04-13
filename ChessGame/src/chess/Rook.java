@@ -19,21 +19,21 @@ public class Rook extends Piece{
     public boolean isLegalMove(ChessBoard board, Coordinate src, Coordinate dest) {
         int changeInColumn = src.getColumnNumber() - dest.getColumnNumber();
         int changeInRow = src.getRowNumber() - dest.getRowNumber();
-        int check = 2;
-        if (changeInColumn == 0 && changeInRow!=0)
-            check = 0;
-        else if(changeInRow == 0 && changeInColumn!=0)
-            check = 1;
+//        int check = 2;
+        if ((changeInColumn == 0 && changeInRow!=0)||changeInRow == 0 && changeInColumn!=0)
+            return super.isLegalMove(board, src, dest);
+        else 
+            return false;
         
-        switch (check){
-            case 0: return super.isLegalMove(board, src, dest);
-                
-            case 1: return super.isLegalMove(board, src, dest);
-            
-            default : return false;
-                
-            
-        }
+//        switch (check){
+//            case 0: return super.isLegalMove(board, src, dest);
+//                
+//            case 1: return super.isLegalMove(board, src, dest);
+//            
+//            default : return false;
+//                
+//            
+//        }
 //        if (!super.isLegalMove(board, src, dest)) return false;
 //        // TBD: Can also move along the X axis!!
 //        // Only along the COLUMN(Y) axis
