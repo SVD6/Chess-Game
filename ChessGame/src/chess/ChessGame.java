@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chess;
 
 import javafx.application.Application;
@@ -20,10 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- *
- * @author vikra
- */
 public class ChessGame extends Application implements ListChangeListener {
 
     private ChessBoard board = new ChessBoard();
@@ -103,8 +94,11 @@ public class ChessGame extends Application implements ListChangeListener {
                 int index = c.getFrom();
                 List<Piece> pieces = c.getAddedSubList();
                 for (Piece p : pieces) {
-                    if (p.getColour() == ChessColour.BLACK) blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
-                    else whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    if (p.getColour() == ChessColour.BLACK) {
+                        blackTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    } else {
+                        whiteTakenSquare[index].setGraphic(new ImageView(new Image("chess/images/" + p.getImageName())));
+                    }
                 }
             }
         }

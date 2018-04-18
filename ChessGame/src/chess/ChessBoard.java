@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chess;
 
 import chess.*;
@@ -11,10 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-/**
- *
- * @author Sai Vikranth Desu
- */
 public class ChessBoard {
 
     private Square board[][];
@@ -182,5 +173,4 @@ public class ChessBoard {
         }
         return result;
     }
-}
 }
