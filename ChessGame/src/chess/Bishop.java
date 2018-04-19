@@ -8,16 +8,27 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isLegalMove(ChessBoard board, Coordinate src, Coordinate dest) {
+        boolean result = super.isLegalMove(board, src, dest);
         int deltaRow = dest.getRowNumber() - src.getRowNumber();
         int deltaCol = dest.getColumnNumber() - src.getColumnNumber();
-        boolean Result = false;
-        Coordinate possible[];
-
+        boolean Result;
+        
         if (Math.abs(deltaRow) == Math.abs(deltaCol)) {
-            if (!(board.getSquare(dest).isOccupied() && (board.getSquare(dest).getPiece().getColour() == board.getSquare(src).getPiece().getColour())) || (!board.getSquare(dest).isOccupied())) {
-                Result = true;
+            Result = true;
+            int srcY = src.getRowNumber();
+            int destY = dest.getRowNumber();
+            int srcX = src.getColumnNumber();
+            int destX = dest.getRowNumber();
+            
+            for (int i = srcY; i <= destY; i++) {
+                if (board.getSquare(new Coordinate(src.getColumnNumber(), i)).isOccupied()) {
+                    Result = false;
+                }
             }
+            
+            return result && Result;
+        } else {
+            return false;
         }
-        return Result;
     }
 }

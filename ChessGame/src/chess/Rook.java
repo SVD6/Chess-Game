@@ -15,13 +15,16 @@ public class Rook extends Piece {
             int srcY = src.getRowNumber();
             int destY = dest.getRowNumber();
             boolean check = true;
+
             if (srcY > destY) { // Moving from Black to White. Flip it for uniform iteration
                 int temp = srcY;
                 srcY = destY;
                 destY = temp;
             }
+
             srcY++;
             destY--;
+
             for (int i = srcY; i <= destY; i++) {
                 if (board.getSquare(new Coordinate(src.getColumnNumber(), i)).isOccupied()) {
                     check = false;
@@ -33,6 +36,7 @@ public class Rook extends Piece {
             int srcX = src.getColumnNumber();
             int destX = dest.getColumnNumber();
             boolean check = true;
+
             if (srcX > destX) { // Moving from Black to White. Flip it for uniform iteration
                 int temp = srcX;
                 srcX = destX;
@@ -40,6 +44,7 @@ public class Rook extends Piece {
             }
             srcX++;
             destX--;
+
             for (int i = srcX; i <= destX; i++) {
                 if (board.getSquare(new Coordinate(i, src.getRowNumber())).isOccupied()) {
                     check = false;
