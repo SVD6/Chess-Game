@@ -28,24 +28,6 @@ public class ChessBoard {
         fullMove = 1;
     }
 
-    public ChessBoard(Coordinate positions[], Piece pieces[]) throws IllegalArgumentException {
-        if (positions.length != pieces.length) {
-            throw new IllegalArgumentException("The list of positions must correspond to the list of pieces");
-        }
-
-        board = new Square[8][8];
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                board[r][c] = new Square(new Coordinate(r, c));
-            }
-        }
-        for (int i = 0; i < positions.length; i++) {
-            board[positions[i].getColumnNumber()][positions[i].getRowNumber()].addPiece(pieces[i]);
-        }
-        activeColour = ChessColour.WHITE;
-        fullMove = 1;
-    }
-
     private void reset() {
         // White rows
         board[0][0].addPiece(new Rook(ChessColour.WHITE));
