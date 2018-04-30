@@ -2,19 +2,15 @@ package chess;
 
 import java.util.ArrayList;
 
-public class Piece {
+public abstract class NewPiece {
 
-    private char shortName;
     private ChessColour colour;
     private ChessPieces name;
+    private ArrayList<MoveList> moves;
 
-    public Piece(ChessColour colour, ChessPieces name) {
+    public NewPiece(ChessColour colour, ChessPieces name) {
         this.colour = colour;
         this.name = name;
-        this.shortName = name.getShortName();
-        if (colour == ChessColour.BLACK) {
-            this.shortName = Character.toLowerCase(this.shortName);
-        }
     }
 
     public ChessColour getColour() {
@@ -25,16 +21,12 @@ public class Piece {
         return this.name;
     }
 
-    public char getShortName() {
-        return this.shortName;
-    }
-
     public String getImageName() {
-        return this.getColour().toString().toLowerCase() + "_" + this.getName().toString().toLowerCase() + ".png";
+        return "chess/images/" + this.getColour().toString().toLowerCase() + "_" + this.getName().toString().toLowerCase() + ".png";
     }
-
-    public String toString() {
-        return (getColour() + " " + getName());
+    
+    public ArrayList getMoves() {
+        return this.moves;
     }
 
     public boolean isLegalMove(ChessBoard board, Coordinate src, Coordinate dest) {
@@ -48,5 +40,9 @@ public class Piece {
         } else {
             return true;
         }
+    }
+
+    public String toString() {
+        return (getColour() + " " + getName());
     }
 }

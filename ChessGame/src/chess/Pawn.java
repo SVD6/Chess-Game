@@ -1,6 +1,6 @@
 package chess;
 
-public class Pawn extends Piece {
+public class Pawn extends NewPiece {
 
     private boolean firstMove;
 
