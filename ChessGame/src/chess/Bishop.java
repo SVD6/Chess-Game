@@ -8,42 +8,44 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isLegalMove(ChessBoard board, Coordinate src, Coordinate dest) {
-        if (!(super.isLegalMove(board, src, dest))) {
-            return false;
-        }
+        boolean result = super.isLegalMove(board, src, dest);
         int deltaRow = dest.getRowNumber() - src.getRowNumber();
         int deltaCol = dest.getColumnNumber() - src.getColumnNumber();
+        boolean Result;
 
         if (Math.abs(deltaRow) == Math.abs(deltaCol)) {
+            Result = true;
             int srcY = src.getRowNumber();
             int destY = dest.getRowNumber();
             int srcX = src.getColumnNumber();
-            int destX = dest.getRowNumber();
-            int Yoffset = 0, Xoffset = 0;
+            int destX = dest.getColumnNumber();
+            int ypath = 1;
+            int xpath = 1;
+            if (destY < srcY) {
+                ypath = -1;
+            }
+            if (destX < srcX) {
+                xpath = -1;
+            }
+            srcX += xpath;
 
             if (srcY < destY) {
-                Yoffset = 1;
-            } else {
-                Xoffset = -1;
-            }
-
-            if (srcX < destX) {
-                Xoffset = 1;
-            } else {
-                Xoffset = -1;
-            }
-
-            int j = srcY;
-
-            for (int i = srcX + Xoffset; i != destX; i += Xoffset) {
-                if (board.getSquare(new Coordinate(i, j)).isOccupied()) {
-                    return false;
+                for (int i = srcY + ypath; i < destY; i += ypath) {
+                    if (board.getSquare(new Coordinate(srcX, i)).isOccupied()) {
+                        Result = false;
+                    }
+                    srcX += xpath;
                 }
-
-                j += Yoffset;
+            } else {
+                for (int i = srcY + ypath; i > destY; i += ypath) {
+                    if (board.getSquare(new Coordinate(srcX, i)).isOccupied()) {
+                        Result = false;
+                    }
+                    srcX += xpath;
+                }
             }
 
-            return true;
+            return result && Result;
         } else {
             return false;
         }
