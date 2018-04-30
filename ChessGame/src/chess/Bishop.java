@@ -11,7 +11,7 @@ public class Bishop extends Piece {
         boolean result = super.isLegalMove(board, src, dest);
         int deltaRow = dest.getRowNumber() - src.getRowNumber();
         int deltaCol = dest.getColumnNumber() - src.getColumnNumber();
-        boolean Result;
+        boolean Result; 
         
         if (Math.abs(deltaRow) == Math.abs(deltaCol)) {
             Result = true;

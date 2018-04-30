@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 
 public class ChessBoard {
 
-    private Square board[][];
+    private Square board[][];   
     private ChessColour activeColour;
     private int fullMove;
     private ArrayList<Piece> whiteTakenPieces;
@@ -23,6 +23,9 @@ public class ChessBoard {
                 board[c][r] = new Square(new Coordinate(c, r));
             }
         }
+        Integer temp = new Integer(5);
+        Integer something[] = new Integer[9];
+        
         reset();
         activeColour = ChessColour.WHITE;
         fullMove = 1;
