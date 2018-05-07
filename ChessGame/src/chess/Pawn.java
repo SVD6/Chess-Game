@@ -24,19 +24,27 @@ public class Pawn extends Piece {
         if (super.getColour() == ChessColour.WHITE && deltaY >= 0) {
             return false;
         }
+        int add = 0;
+        if(src.getRow() - dest.getRow() < 0 ){
+            add = 1;
+        }else{
+            add = -1;
+        }
 
-        deltaX = Math.abs(deltaX);
-        deltaY = Math.abs(deltaY);
+        int deltaXabs = Math.abs(deltaX);
+        int deltaYabs = Math.abs(deltaY);
 
-        if (deltaX == 0 && deltaY == 1 & !board.getSquare(dest).isOccupied()) {
+        if (deltaXabs == 0 && deltaYabs == 1 & !board.getSquare(dest).isOccupied()) {
             firstMove = false;
             return true;
         }
-        if (firstMove && deltaX == 0 && deltaY == 2 & !board.getSquare(dest).isOccupied()) {
+        if (firstMove && deltaXabs == 0 && deltaYabs == 2 & !board.getSquare(dest).isOccupied()) {
+            if(!board.getSquare(new Coordinate(0,src.getRowNumber()+add) ).isOccupied()){
+                    
             firstMove = false;
-            return true;
+            return true;}
         }
-        if (deltaX == 1 && deltaY == 1 && board.getSquare(dest).isOccupied()) {
+        if (deltaXabs == 1 && deltaYabs == 1 && board.getSquare(dest).isOccupied()) {
             firstMove = false;
             return true;
         }
